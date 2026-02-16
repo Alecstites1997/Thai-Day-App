@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Thai Day Orders</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: sans-serif; max-width: 500px; margin: 2em auto; padding: 0 1em; }
+        input, textarea, select { width: 100%; padding: 0.5em; margin: 0.5em 0; box-sizing: border-box; }
+        button { background: #d43f3a; color: white; border: none; padding: 1em; width: 100%; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Thai Day Orders</h1>
+    <form method="POST">
+        <label>Name:</label>
+        <input type="text" name="name" required>
+        <label>Order:</label>
+        <input type="text" name="order" required placeholder="e.g., Pad Thai">
+        <label>Notes:</label>
+        <textarea name="notes" placeholder="Any allergies or special requests?"></textarea>
+        <button type="submit">Submit Order</button>
+    </form>
+</body>
+</html>

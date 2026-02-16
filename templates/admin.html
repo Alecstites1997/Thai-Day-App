@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin - Thai Day</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>Orders (Total: {{ total }})</h1>
+    <form action="/admin/clear?key=thaiday2025" method="POST" style="margin-bottom: 1em;">
+        <button type="submit" onclick="return confirm('Clear all orders?')">Clear All Orders</button>
+    </form>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Order</th>
+            <th>Notes</th>
+            <th>Time</th>
+            <th>Action</th>
+        </tr>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.name }}</td>
+            <td>{{ order.order }}</td>
+            <td>{{ order.notes }}</td>
+            <td>{{ order.timestamp }}</td>
+            <td>
+                <form action="/admin/delete/{{ order.id }}?key=thaiday2025" method="POST">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
