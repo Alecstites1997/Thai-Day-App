@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Metrics — Thai Day</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F5F5F5;
+            color: #191919;
+            min-height: 100vh;
+        }
+
+        /* ── Top nav bar ── */
+        .topbar {
+            background: #fff;
+            border-bottom: 1px solid #E8E8E8;
+            padding: 0 2rem;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .topbar-brand {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #191919;
+            letter-spacing: -0.3px;
+        }
+
+        .topbar-brand span { color: #FF3008; }
+
+        .topbar-nav {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .topbar-nav a {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #767676;
+            text-decoration: none;
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            transition: background 0.12s, color 0.12s;
+        }
+
+        .topbar-nav a:hover { background: #F5F5F5; color: #191919; }
+
+        .topbar-nav a.active {
+            background: #F5F5F5;
+            color: #191919;
+        }
+
+        /* ── Page container ── */
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* ── Page heading row ── */
+        .page-header {
+            margin-bottom: 1.25rem;
+        }
+
+        .page-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .page-subtitle {
+            margin-top: 0.3rem;
+            font-size: 0.88rem;
+            color: #767676;
+        }
+
+        /* ── Summary stat cards ── */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.05);
+            padding: 1.1rem 1.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #767676;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.35rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            color: #191919;
+        }
+
+        .stat-value.red { color: #FF3008; }
+
+        /* ── User cards ── */
+        .user-list { display: flex; flex-direction: column; gap: 0.75rem; }
+
+        details {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        details[open] { box-shadow: 0 1px 4px rgba(0,0,0,0.1), 0 6px 20px rgba(0,0,0,0.08); }
+
+        summary {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            cursor: pointer;
+            list-style: none;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker { display: none; }
+
+        summary:hover { background: #FAFAFA; }
+
+        .summary-name {
+            font-weight: 700;
+            font-size: 1rem;
+            flex: 1;
+        }
+
+        .summary-meta {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            font-size: 0.82rem;
+            color: #767676;
+        }
+
+        .summary-meta .count {
+            display: inline-flex;
+            align-items: center;
+            background: #FF3008;
+            color: #fff;
+            border-radius: 20px;
+            padding: 0.2rem 0.65rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .meta-item { display: flex; flex-direction: column; gap: 1px; text-align: right; }
+        .meta-item .meta-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: #ADADAD; }
+        .meta-item .meta-val   { font-size: 0.82rem; font-weight: 600; color: #444; }
+
+        .chevron {
+            width: 18px;
+            height: 18px;
+            stroke: #ADADAD;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+            transition: transform 0.15s;
+        }
+
+        details[open] .chevron { transform: rotate(180deg); }
+
+        /* ── Order history table inside each user card ── */
+        .history-wrap {
+            border-top: 1px solid #F0F0F0;
+        }
+
+        .history-wrap table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .history-wrap thead th {
+            padding: 0.6rem 1.25rem;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #767676;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            text-align: left;
+            background: #FAFAFA;
+            border-bottom: 1px solid #F0F0F0;
+            white-space: nowrap;
+        }
+
+        .history-wrap tbody td {
+            padding: 0.7rem 1.25rem;
+            font-size: 0.88rem;
+            color: #191919;
+            border-bottom: 1px solid #F8F8F8;
+            vertical-align: middle;
+        }
+
+        .history-wrap tbody tr:last-child td { border-bottom: none; }
+        .history-wrap tbody tr:hover td { background: #FAFAFA; }
+
+        .td-date  { color: #767676; font-size: 0.8rem; white-space: nowrap; }
+        .td-week  { color: #ADADAD; font-size: 0.78rem; white-space: nowrap; }
+        .td-notes { color: #767676; font-size: 0.82rem; }
+
+        /* ── Empty state ── */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #767676;
+            font-size: 0.95rem;
+        }
+
+        .empty-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="topbar">
+        <span class="topbar-brand">Thai<span>Day</span></span>
+        <div class="topbar-nav">
+            <a href="/admin?key={{ admin_key }}">Orders</a>
+            <a href="/admin/metrics?key={{ admin_key }}" class="active">Metrics</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">User Metrics</h1>
+            <p class="page-subtitle">Lifetime ordering history per person — names matched case-insensitively.</p>
+        </div>
+
+        <!-- Summary stat cards -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-label">Unique Customers</div>
+                <div class="stat-value red">{{ unique_users }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Orders (All Time)</div>
+                <div class="stat-value">{{ total_orders }}</div>
+            </div>
+        </div>
+
+        <!-- Per-user collapsible cards -->
+        {% if users %}
+        <div class="user-list">
+            {% for user in users %}
+            <details>
+                <summary>
+                    <span class="summary-name">{{ user.display_name }}</span>
+                    <div class="summary-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Fav Order</span>
+                            <span class="meta-val">{{ user.most_common }}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Last Ordered</span>
+                            <span class="meta-val">{{ user.last_ordered }}</span>
+                        </div>
+                        <span class="count">{{ user.total_orders }} order{% if user.total_orders != 1 %}s{% endif %}</span>
+                    </div>
+                    <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </summary>
+
+                <div class="history-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Week</th>
+                                <th>Order</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for o in user.orders %}
+                            <tr>
+                                <td class="td-date">{{ o.timestamp[:10] }}</td>
+                                <td class="td-week">Wk {{ o.week }}</td>
+                                <td>{{ o.order }}</td>
+                                <td class="td-notes">{{ o.notes if o.notes else "—" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </details>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">📋</div>
+            No order history yet.
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

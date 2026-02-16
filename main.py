@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
+from collections import Counter
 
 #Updated as of 2/15
 
@@ -78,6 +79,56 @@ def delete_order(order_id):
     orders = [o for o in orders if o["id"] != order_id]
     save_orders(orders)
     return redirect(url_for("admin", key=key))
+
+
+@app.route("/admin/metrics")
+def admin_metrics():
+    admin_key = request.args.get("key", "")
+    if admin_key != ADMIN_KEY:
+        return render_template("locked.html"), 403
+
+    orders = load_orders()
+
+    # Group orders by case-insensitive name
+    user_map = {}
+    for o in orders:
+        key_name = o["name"].strip().lower()
+        if key_name not in user_map:
+            user_map[key_name] = {
+                "display_name": o["name"].strip(),
+                "total_orders": 0,
+                "orders": [],
+            }
+        else:
+            # Use the most recently submitted capitalization
+            user_map[key_name]["display_name"] = o["name"].strip()
+        user_map[key_name]["total_orders"] += 1
+        user_map[key_name]["orders"].append(o)
+
+    users = []
+    for u in user_map.values():
+        u["orders"].sort(key=lambda x: x["timestamp"], reverse=True)
+        # Annotate each order with ISO week number
+        for o in u["orders"]:
+            try:
+                dt = datetime.strptime(o["timestamp"][:10], "%Y-%m-%d")
+                o["week"] = f"{dt.isocalendar()[1]:02d} '{str(dt.year)[2:]}"
+            except ValueError:
+                o["week"] = "—"
+        order_counts = Counter(o["order"] for o in u["orders"])
+        u["most_common"] = order_counts.most_common(1)[0][0] if order_counts else "—"
+        u["last_ordered"] = u["orders"][0]["timestamp"][:10] if u["orders"] else "—"
+        users.append(u)
+
+    users.sort(key=lambda x: x["total_orders"], reverse=True)
+
+    return render_template(
+        "metrics.html",
+        users=users,
+        total_orders=len(orders),
+        unique_users=len(users),
+        admin_key=ADMIN_KEY,
+    )
 
 
 if __name__ == "__main__":

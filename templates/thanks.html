@@ -1,15 +1,143 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Thank You</title>
+    <title>Order Confirmed — Thai Day</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: sans-serif; text-align: center; margin-top: 5em; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F5F5F5;
+            color: #191919;
+            min-height: 100vh;
+        }
+
+        /* ── Top nav bar ── */
+        .topbar {
+            background: #fff;
+            border-bottom: 1px solid #E8E8E8;
+            padding: 0 1.5rem;
+            height: 56px;
+            display: flex;
+            align-items: center;
+        }
+
+        .topbar-brand {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #191919;
+            letter-spacing: -0.3px;
+        }
+
+        .topbar-brand span { color: #FF3008; }
+
+        /* ── Centered content ── */
+        .container {
+            max-width: 480px;
+            margin: 4rem auto;
+            padding: 0 1rem;
+            text-align: center;
+        }
+
+        /* ── Check icon ── */
+        .icon-wrap {
+            width: 64px;
+            height: 64px;
+            background: #FF3008;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .icon-wrap svg {
+            width: 30px;
+            height: 30px;
+            stroke: #fff;
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #767676;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        /* ── Card ── */
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.06);
+            padding: 1.5rem 1.75rem;
+            margin-bottom: 1.25rem;
+            text-align: left;
+        }
+
+        .card-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #F0F0F0;
+            font-size: 0.9rem;
+        }
+
+        .card-row:last-child { border-bottom: none; }
+
+        .card-row .label {
+            color: #767676;
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .card-row .value { font-weight: 600; }
+
+        /* ── Link ── */
+        .btn-link {
+            display: inline-block;
+            background: #FF3008;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background 0.15s;
+        }
+
+        .btn-link:hover { background: #E02000; }
     </style>
 </head>
 <body>
-    <h1>Thanks, {{ person }}!</h1>
-    <p>Your order has been received.</p>
-    <a href="/">Order more</a>
+    <nav class="topbar">
+        <span class="topbar-brand">Thai<span>Day</span></span>
+    </nav>
+
+    <div class="container">
+        <div class="icon-wrap">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h1>Order Received!</h1>
+        <p class="subtitle">Thanks, {{ person }}. Your order is in — we'll take it from here.</p>
+
+        <a class="btn-link" href="/">Place Another Order</a>
+    </div>
 </body>
 </html>
