@@ -34,3 +34,7 @@ integrations = ["github:1.0.0"]
 
 [nix]
 channel = "stable-25_05"
+
+[deployment]
+deploymentTarget = "autoscale"
+run = ["python", "main.py"]
