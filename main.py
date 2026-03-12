@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 import json
 import os
+import uuid
 from datetime import datetime, timedelta
 from collections import Counter
 
@@ -34,7 +35,7 @@ def index():
         if name and order:
             orders = load_orders()
             orders.append({
-                "id": len(orders) + 1,
+                "id": str(uuid.uuid4()),
                 "name": name,
                 "order": order,
                 "notes": notes,
@@ -70,7 +71,7 @@ def clear_orders():
     return redirect(url_for("admin", key=key))
 
 
-@app.route("/admin/delete/<int:order_id>", methods=["POST"])
+@app.route("/admin/delete/<order_id>", methods=["POST"])
 def delete_order(order_id):
     key = request.args.get("key", "")
     if key != ADMIN_KEY:
