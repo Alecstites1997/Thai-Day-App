@@ -211,22 +211,16 @@
                         <th>Order</th>
                         <th>Notes</th>
                         <th>Time</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for order in orders %}
                     <tr>
-                        <td class="td-id">#{{ order.id }}</td>
+                        <td class="td-id">#{{ loop.index }}</td>
                         <td class="td-name">{{ order.name }}</td>
                         <td>{{ order.order }}</td>
                         <td class="td-notes">{{ order.notes }}</td>
                         <td class="td-time">{{ order.timestamp }}</td>
-                        <td>
-                            <form action="/admin/delete/{{ order.id }}?key=thaiday2025" method="POST">
-                                <button class="btn-outline-danger" type="submit">Delete</button>
-                            </form>
-                        </td>
                     </tr>
                     {% else %}
                     <tr>
